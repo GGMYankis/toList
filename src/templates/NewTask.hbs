@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificación de Nueva Tarea Asignada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: gainsboro;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            color: #0056b3;
+        }
+
+        .content {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="header">Nueva Tarea Asignada en Task Master</h2>
+
+        <div class="content">
+            <p>¡Hola {{NombreUsuario}}!</p>
+
+            <p>Te han asignado una nueva tarea en la plataforma <strong>Task Master</strong>. Aquí tienes los detalles:
+            </p>
+
+            <p><strong>Nombre de la Tarea:</strong> {{nombreTarea}}</p>
+            <p><strong>Descripción:</strong> {{descripcionTarea}}</p>
+            <p><strong>Fecha de Vencimiento:</strong> {{fechaVencimiento}}</p>
+
+            <p>Por favor, accede a Task Master para revisar los detalles completos de la tarea y comenzar a trabajar en
+                ella.</p>
+
+            <a href="{{urlTarea}}" class="button">Ver Tarea en Task Master</a>
+        </div>
+
+        <div class="footer">
+            <p>Gracias por utilizar Task Master para gestionar tus tareas.</p>
+        </div>
+    </div>
+</body>
+
+</html>

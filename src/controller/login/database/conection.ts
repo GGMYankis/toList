@@ -2,12 +2,12 @@ import * as sql from 'mssql';
 
 
 /* export const sqlConfig: sql.config = {
-    user: 'sa', 
-    password: 'developer12x#', 
+    user: 'sa',
+    password: 'developer12x#',
     database: 'taskMaster',
-    server: 'DEVELOPER', 
+    server: 'DEVELOPER',
     options: {
-        encrypt: false, 
+        encrypt: false,
         trustServerCertificate: true,
         enableArithAbort: false
     },

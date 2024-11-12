@@ -40,4 +40,12 @@ export class TaskMasterController {
     ChangeStatus(@Body() changeStatusDto: ChangeStatusDto) {
         return this.taskMasterService.changeStatus(changeStatusDto);
     }
+
+
+
+    @Get('revisada/:id')
+    Revisada(@Param('id') id: string) {
+        return this.taskMasterService.revisada(id);
+    }
+
 }

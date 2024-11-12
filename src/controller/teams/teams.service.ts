@@ -27,6 +27,27 @@ export class TeamsService {
             }
         }
     }
+    async listTeamsOfUser(id: string) {
+
+        const pool = await connectToDatabase();
+        try {
+            const result = await pool.request()
+                .query(`select * from teams where id = ${id} `);
+
+            return {
+                status: true,
+                value: result.recordset,
+                msgError: null
+            }
+
+        } catch (err) {
+            return {
+                status: false,
+                value: null,
+                message: err.message
+            }
+        }
+    }
 
     async register(taskDto: TeamDto) {
         const pool = await connectToDatabase();

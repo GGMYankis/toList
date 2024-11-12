@@ -190,4 +190,21 @@ export class TaskMasterService {
             }
         }
     }
+
+    async revisada(id: string) {
+        const pool = await connectToDatabase();
+        try {
+
+            const result = await pool.request()
+                .query(`update tasks  set revisada  =  1 where id =  ${id} `);
+
+            return result.recordset;
+        } catch (err) {
+            return {
+                status: false,
+                value: null,
+                message: err.message
+            }
+        }
+    }
 }

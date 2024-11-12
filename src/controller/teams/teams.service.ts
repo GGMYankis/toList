@@ -11,7 +11,7 @@ export class TeamsService {
         const pool = await connectToDatabase();
         try {
             const result = await pool.request()
-                .query('select * from teams');
+                .query('select t.* , u.nombre  as lider from   teams t inner join users2 u on t.id_leader =   u.id');
 
             return {
                 status: true,
@@ -32,7 +32,7 @@ export class TeamsService {
         const pool = await connectToDatabase();
         try {
             const result = await pool.request()
-                .query(`select * from teams where id = ${id} `);
+                .query(`select t.* , u.nombre  as lider from   teams t inner join users2 u on t.id_leader =   u.id where t.id = ${id}`);
 
             return {
                 status: true,

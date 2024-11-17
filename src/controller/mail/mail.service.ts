@@ -10,10 +10,6 @@ export class MailService {
 
     constructor(private readonly mailerService: MailerService) { }
 
-
-
-
-
     private async crearHtmlCorreo(templateCorreo: string, mailDto: MailDto): Promise<string> {
         try {
             // Lee y compila la plantilla

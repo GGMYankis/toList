@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { connectToDatabase } from '../login/database/conection';
 import * as sql from 'mssql';
-import { ChangeStatusDto, TaskDto } from './task-master-dto/task';
+import { ChangeStatusDto, TaskDto, TaskNotificacionDto } from './task-master-dto/task';
 import { MailService } from '../mail/mail.service';
 import { MailDto } from '../mail/mail-dto/mail';
+import { NotificacionService } from '../notificacion/notificacion.service';
+import { NotificacionDto } from '../notificacion/notificacion-dto/notificacion';
 
 @Injectable()
 export class TaskMasterService {
 
-    constructor(private readonly mailService: MailService) { }
+    constructor(
+        private readonly notificacionService: NotificacionService,
+        private readonly mailService: MailService,
+    ) { }
 
     async list(id: string) {
 
@@ -167,19 +172,37 @@ export class TaskMasterService {
         }
     }
 
-    async changeStatus(changeStatusDto: ChangeStatusDto) {
+    async changeStatus(taskNotificacionDto: TaskNotificacionDto) {
         const pool = await connectToDatabase();
         try {
 
-            console.log(changeStatusDto)
 
             const result = await pool.request()
                 .input('Action', sql.VarChar(10), 'status')
-                .input('Id_task', sql.Int, changeStatusDto.id_task)
-                .input('Id_Estado', sql.Int, changeStatusDto.id_status)
+                .input('Id_task', sql.Int, taskNotificacionDto.idTask)
+                .input('Id_Estado', sql.Int, taskNotificacionDto.id_status)
 
                 .execute('asp_task');
 
+            const result2 = await pool.request()
+                .query(`SELECT * FROM USERS2  where id =  ${taskNotificacionDto.idUsuario} `);
+
+            const result3 = await pool.request()
+                .query(`SELECT * FROM TASKS  where id =  ${taskNotificacionDto.idTask} `);
+
+            const userName = result2.recordset[0].nombre;
+            const taskName = result3.recordset[0].titulo;
+
+
+            const configNotificacion: NotificacionDto = {
+                descripcion: `${userName} ha completado   la tarea ${taskName}`,
+                idUsuario: taskNotificacionDto.idUsuario,
+                idUsuarioNotificador: taskNotificacionDto.idUsuarioNotificador,
+                idTask: taskNotificacionDto.idTask,
+            }
+
+
+            this.notificacionService.register(configNotificacion);
 
             return result.recordset;
         } catch (err) {
@@ -191,13 +214,34 @@ export class TaskMasterService {
         }
     }
 
-    async revisada(id: string) {
+    async revisada(taskNotificacionDto: TaskNotificacionDto) {
         const pool = await connectToDatabase();
         try {
 
-            const result = await pool.request()
-                .query(`update tasks  set revisada  =  1 where id =  ${id} `);
 
+            const result = await pool.request()
+                .query(`update tasks  set revisada  =  1 where id =  ${taskNotificacionDto.idTask} `);
+
+            const result2 = await pool.request()
+                .query(`SELECT * FROM USERS2  where id =  ${taskNotificacionDto.idUsuario} `);
+
+            const result3 = await pool.request()
+                .query(`SELECT * FROM TASKS  where id =  ${taskNotificacionDto.idTask} `);
+
+            const userName = result2.recordset[0].nombre;
+            const taskName = result3.recordset[0].titulo;
+
+
+            const configNotificacion: NotificacionDto = {
+                descripcion: `${userName} ha completado   la tarea ${taskName}`,
+                idUsuario: taskNotificacionDto.idUsuario,
+                idUsuarioNotificador: taskNotificacionDto.idUsuarioNotificador,
+                idTask: taskNotificacionDto.idTask,
+            }
+
+
+
+            this.notificacionService.register(configNotificacion);
             return result.recordset;
         } catch (err) {
             return {

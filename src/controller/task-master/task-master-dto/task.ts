@@ -79,3 +79,33 @@ export class ChangeStatusDto {
 
 
 }
+
+
+export class TaskNotificacionDto {
+    @ApiProperty()
+    @IsInt()
+    @IsNotEmpty()
+    id: Number;
+
+    @ApiProperty()
+    @IsInt()
+    @IsNotEmpty()
+    idUsuario: Number;
+
+    @ApiProperty()
+    @IsInt()
+    @IsNotEmpty()
+    idUsuarioNotificador: Number;
+
+    @ApiProperty()
+    @IsInt()
+    @IsNotEmpty()
+    idTask: Number;
+
+    @ApiProperty()
+    @IsInt()
+    @IsNotEmpty()
+    id_status: Number;
+
+
+}

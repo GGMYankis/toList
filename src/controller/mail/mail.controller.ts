@@ -7,15 +7,15 @@ import { MailDto } from './mail-dto/mail';
 @Controller('mail')
 export class MailController {
 
-    constructor(private readonly mailService: MailService) { }
+  constructor(private readonly mailService: MailService) { }
 
-    @Post()
-    async sendConfirmation(@Body() mailDto: MailDto) {
-        /*   const token = 'token-generado'; // Genera o obtiene el token aquí
-          await this.mailService.sendUserConfirmation(mailDto.email);
-          return { message: 'Correo de confirmación enviado' }; */
+  @Post()
+  async sendConfirmation(@Body() mailDto: MailDto) {
+    /*   const token = 'token-generado'; // Genera o obtiene el token aquí
+      await this.mailService.sendUserConfirmation(mailDto.email);
+      return { message: 'Correo de confirmación enviado' }; */
 
-        return 'Hola'
-    }
+    return 'Hola'
+  }
 
 }

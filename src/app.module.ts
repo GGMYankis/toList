@@ -11,6 +11,7 @@ import { MailModule } from './controller/mail/mail.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { RoleModule } from './controller/role/role.module';
 import { CommentModule } from './controller/comment/comment.module';
+import { NotificacionModule } from './controller/notificacion/notificacion.module';
 
 @Module({
 
@@ -32,7 +33,7 @@ import { CommentModule } from './controller/comment/comment.module';
         from: '"Giancarlos" <giancarlosgenao7@gmail.com>',
       },
     }),
-    LoginModule, TaskMasterModule, TaskStatusModule, TeamsModule, UserModule, PriorityModule, MailModule, RoleModule, CommentModule],
+    LoginModule, TaskMasterModule, TaskStatusModule, TeamsModule, UserModule, PriorityModule, MailModule, RoleModule, CommentModule, NotificacionModule],
   controllers: [AppController],
   providers: [AppService],
 })

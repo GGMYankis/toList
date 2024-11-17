@@ -10,8 +10,32 @@ export class TeamsService {
 
         const pool = await connectToDatabase();
         try {
+            const query = `
+    SELECT 
+    tm.id,
+    tm.nombre,
+    tm.fondo, 
+    COUNT(t.id) AS TaskCount,
+    u.nombre AS lider
+FROM 
+    teams tm
+LEFT JOIN 
+    tasks t 
+ON 
+    tm.id = t.id_teams
+LEFT JOIN 
+    users2 u 
+ON 
+    u.id = tm.id_leader
+
+GROUP BY 
+    tm.id, tm.nombre, tm.fondo, u.nombre;
+
+          `;
+
             const result = await pool.request()
-                .query('select t.* , u.nombre  as lider from   teams t inner join users2 u on t.id_leader =   u.id');
+                .query(query);
+
 
             return {
                 status: true,
@@ -28,11 +52,33 @@ export class TeamsService {
         }
     }
     async listTeamsOfUser(id: string) {
+        const query = `
+      SELECT 
+    tm.id,
+    tm.nombre,
+    tm.fondo, 
+    COUNT(t.id) AS TaskCount,
+    u.nombre AS lider
+FROM 
+    teams tm
+LEFT JOIN 
+    tasks t 
+ON 
+    tm.id = t.id_teams
+LEFT JOIN 
+    users2 u 
+ON 
+    u.id = tm.id_leader
+WHERE 
+    tm.id = ${id}
+GROUP BY 
+    tm.id, tm.nombre, tm.fondo, u.nombre;
 
+      `;
         const pool = await connectToDatabase();
         try {
             const result = await pool.request()
-                .query(`select t.* , u.nombre  as lider from   teams t inner join users2 u on t.id_leader =   u.id where t.id = ${id}`);
+                .query(query);
 
             return {
                 status: true,

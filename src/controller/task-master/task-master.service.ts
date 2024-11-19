@@ -185,7 +185,7 @@ export class TaskMasterService {
                 .execute('asp_task');
 
             const result2 = await pool.request()
-                .query(`SELECT * FROM USERS2  where id =  ${taskNotificacionDto.idUsuario} `);
+                .query(`SELECT * FROM USERS2  where id =  ${taskNotificacionDto.idUsuarioNotificador} `);
 
             const result3 = await pool.request()
                 .query(`SELECT * FROM TASKS  where id =  ${taskNotificacionDto.idTask} `);

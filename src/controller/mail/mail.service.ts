@@ -21,7 +21,7 @@ export class MailService {
                 NombreUsuario: mailDto.userName,
                 descripcionTarea: mailDto.descripcion,
                 fechaVencimiento: mailDto.fechaVencimiento,
-                urlTarea: 'http://localhost:4200/pages/tareas/1/Hospitaliza',
+                urlTarea: 'https://dazzling-sunburst-94e779.netlify.app',
             });
             return html;
         } catch (error) {
@@ -33,10 +33,10 @@ export class MailService {
 
     async sendUserConfirmation(mailDto: MailDto) {
         try {
-            // Crea el HTML del correo usando la plantilla
+
             const html = await this.crearHtmlCorreo('NewTask', mailDto);
 
-            // Enviar el correo con el HTML generado
+
             await this.mailerService.sendMail({
                 to: mailDto.email,
                 subject: 'Confirmación de cuenta',

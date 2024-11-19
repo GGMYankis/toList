@@ -22,6 +22,7 @@ export class MailDto {
     @IsNotEmpty()
     userName: string;
 
+
     @ApiProperty()
     @IsString()
     @IsNotEmpty()

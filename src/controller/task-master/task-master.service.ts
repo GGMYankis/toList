@@ -119,11 +119,12 @@ export class TaskMasterService {
                 .execute('asp_task');
 
             const foundUser = await pool.request()
-                .query(`select * from users where id  = ${taskDto.id_user} `);
+                .query(`select * from users2 where id  = ${taskDto.id_user} `);
 
             if (foundUser.recordset) {
 
                 const configMail: MailDto = {
+
                     email: foundUser.recordset[0].correo,
                     taskName: taskDto.titulo,
                     descripcion: taskDto.descripcion,

@@ -9,6 +9,13 @@ export class UserController {
 
     constructor(private readonly userService: UserService) { }
 
+
+    @Get('')
+    List() {
+        return this.userService.list();
+    }
+
+
     @Get('ListByTeam/:idTeam')
     ListByTeam(@Param('idTeam') idTeam: string) {
         return this.userService.listByTeam(idTeam);

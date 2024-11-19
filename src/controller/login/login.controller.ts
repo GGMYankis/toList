@@ -9,11 +9,6 @@ export class LoginController {
 
     constructor(private readonly loginService: LoginService) { }
 
-    @Get('listUsers')
-    List() {
-        return this.loginService.list();
-    }
-
     @Post()
     Login(@Body() loginDto: LoginDto) {
         return this.loginService.login(loginDto);

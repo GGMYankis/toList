@@ -6,6 +6,30 @@ import { UserDto } from './user-dto/user';
 @Injectable()
 export class UserService {
 
+    async list() {
+        const pool = await connectToDatabase();
+
+        try {
+            const result = await pool.request()
+                .input('Action', sql.VarChar(10), 'listAll')
+                .execute('asp_register_user');
+
+
+            return {
+                status: true,
+                value: result.recordset,
+                msgError: null
+            }
+
+        } catch (err) {
+            return {
+                status: false,
+                value: null,
+                message: err.message
+            }
+        }
+    }
+
     async listByTeam(idTeam: string) {
         const pool = await connectToDatabase();
 

@@ -8,33 +8,11 @@ import { JwtService } from '@nestjs/jwt';
 export class LoginService {
     constructor(private jwtService: JwtService) { }
 
-    async list() {
-        const pool = await connectToDatabase();
 
-        try {
-            const result = await pool.request()
-                .input('Action', sql.VarChar(10), 'listAll')
-                .execute('asp_register_user');
-
-
-            return {
-                status: true,
-                value: result.recordset,
-                msgError: null
-            }
-
-        } catch (err) {
-            return {
-                status: false,
-                value: null,
-                message: err.message
-            }
-        }
-    }
 
     async login(loginDto: LoginDto) {
         const pool = await connectToDatabase();
-
+        console.log(loginDto)
         try {
             const result = await pool.request()
                 .input('Email', sql.VarChar(100), loginDto.email)

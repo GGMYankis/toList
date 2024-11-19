@@ -52,6 +52,12 @@ GROUP BY
         }
     }
     async listTeamsOfUser(id: string) {
+        const pool = await connectToDatabase();
+
+        const userFound = await pool.request()
+            .query(`SELECT  u.id_team FROM USERS2 u WHERE ID = ${id}`);
+
+        const team = userFound.recordset[0].id_team;
         const query = `
       SELECT 
     tm.id,
@@ -70,12 +76,11 @@ LEFT JOIN
 ON 
     u.id = tm.id_leader
 WHERE 
-    tm.id = ${id}
+    tm.id = ${team}
 GROUP BY 
     tm.id, tm.nombre, tm.fondo, u.nombre;
 
       `;
-        const pool = await connectToDatabase();
         try {
             const result = await pool.request()
                 .query(query);

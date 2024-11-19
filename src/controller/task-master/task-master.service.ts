@@ -215,34 +215,13 @@ export class TaskMasterService {
         }
     }
 
-    async revisada(taskNotificacionDto: TaskNotificacionDto) {
+    async revisada(id: string) {
         const pool = await connectToDatabase();
         try {
 
-
             const result = await pool.request()
-                .query(`update tasks  set revisada  =  1 where id =  ${taskNotificacionDto.idTask} `);
+                .query(`update tasks  set revisada  =  1 where id =  ${id} `);
 
-            const result2 = await pool.request()
-                .query(`SELECT * FROM USERS2  where id =  ${taskNotificacionDto.idUsuario} `);
-
-            const result3 = await pool.request()
-                .query(`SELECT * FROM TASKS  where id =  ${taskNotificacionDto.idTask} `);
-
-            const userName = result2.recordset[0].nombre;
-            const taskName = result3.recordset[0].titulo;
-
-
-            const configNotificacion: NotificacionDto = {
-                descripcion: `${userName} ha completado   la tarea ${taskName}`,
-                idUsuario: taskNotificacionDto.idUsuario,
-                idUsuarioNotificador: taskNotificacionDto.idUsuarioNotificador,
-                idTask: taskNotificacionDto.idTask,
-            }
-
-
-
-            this.notificacionService.register(configNotificacion);
             return result.recordset;
         } catch (err) {
             return {

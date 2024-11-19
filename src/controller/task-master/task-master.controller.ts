@@ -41,14 +41,9 @@ export class TaskMasterController {
         return this.taskMasterService.changeStatus(taskNotificacionDto);
     }
 
-    @Get('revisada/:id/:idUser/:idNotificador')
-    Revisada(@Param('id') id: string, idUser: string, idNotificador: string) {
-        //  return this.taskMasterService.revisada(id, idUser, idNotificador);
-    }
-
-    @Post('revisada')
-    newRevisada(@Body() taskNotificacionDto: TaskNotificacionDto) {
-        return this.taskMasterService.revisada(taskNotificacionDto);
+    @Get('revisada/:id')
+    newRevisada(@Param('id') id: string) {
+        return this.taskMasterService.revisada(id);
     }
 
 

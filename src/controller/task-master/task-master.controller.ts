@@ -25,6 +25,12 @@ export class TaskMasterController {
         return this.taskMasterService.userTask(id);
     }
 
+    @Get('solicitudes/:id')
+    ListUserTaskOtherTeam(@Param('id') id: string) {
+        return this.taskMasterService.listUserTaskOtherTeam(id);
+    }
+
+
     @Post()
     Register(@Body() taskDto: TaskDto) {
         return this.taskMasterService.register(taskDto);

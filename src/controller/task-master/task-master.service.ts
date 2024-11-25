@@ -51,6 +51,7 @@ export class TaskMasterService {
                 .input('Id_teams', sql.Int, 0)
                 .input('Id_user', sql.Int, id)
                 .input('Action', sql.VarChar(10), 'list')
+                .input('SubAction', sql.VarChar(50), 'myTask')
                 .execute('asp_task');
 
             let tareasAgrupadas = {}
@@ -76,7 +77,40 @@ export class TaskMasterService {
             }
         }
     }
+    async listUserTaskOtherTeam(id: string) {
 
+        const pool = await connectToDatabase();
+        try {
+            const result = await pool.request()
+                .input('Id_teams', sql.Int, 0)
+                .input('Id_user', sql.Int, id)
+                .input('Action', sql.VarChar(10), 'list')
+                .input('SubAction', sql.VarChar(50), 'solicitudes')
+                .execute('asp_task');
+
+            let tareasAgrupadas = {}
+            if (result.recordset.length > 0) {
+                tareasAgrupadas = {
+                    tareasPendientes: result.recordset.filter(task => task.id_estado === 1),
+                    tareasCompletadas: result.recordset.filter(task => task.id_estado === 3),
+                    tareasEnProgreso: result.recordset.filter(task => task.id_estado === 2),
+                }
+            }
+
+            return {
+                status: true,
+                value: tareasAgrupadas,
+                msgError: null
+            }
+
+        } catch (err) {
+            return {
+                status: false,
+                value: null,
+                message: err.message
+            }
+        }
+    }
     async listColor() {
         const pool = await connectToDatabase();
         try {
@@ -121,6 +155,8 @@ export class TaskMasterService {
             const foundUser = await pool.request()
                 .query(`select * from users2 where id  = ${taskDto.id_user} `);
 
+            const userFound = await this.getUser(taskDto.id_creador);
+
             if (foundUser.recordset) {
 
                 const configMail: MailDto = {
@@ -133,6 +169,16 @@ export class TaskMasterService {
                 }
 
                 this.mailService.sendUserConfirmation(configMail);
+
+                const configNotificacion: NotificacionDto = {
+                    descripcion: `${userFound.recordset[0].nombre} te ha asignado una nueva tarea`,
+                    idUsuario: taskDto.id_user,
+                    idUsuarioNotificador: taskDto.id_creador,
+                    idTask: 1,
+                }
+
+
+                this.notificacionService.register(configNotificacion);
             }
 
             return result.recordset;
@@ -230,5 +276,21 @@ export class TaskMasterService {
                 message: err.message
             }
         }
+    }
+
+
+    async getUser(id: Number) {
+        const pool = await connectToDatabase();
+
+        try {
+
+            const user = await pool.request()
+                .query(`select * from users2 where id  = ${id} `);
+
+            return user;
+        } catch (error) {
+
+        }
+
     }
 }

@@ -11,25 +11,25 @@ export class TeamsService {
         const pool = await connectToDatabase();
         try {
             const query = `
-    SELECT 
+SELECT 
     tm.id,
     tm.nombre,
     tm.fondo, 
-    COUNT(t.id) AS TaskCount,
+    COUNT(t.id) AS TaskCount,  -- Cuenta todas las tareas con id_estado = 3
     u.nombre AS lider
 FROM 
     teams tm
 LEFT JOIN 
     tasks t 
 ON 
-    tm.id = t.id_teams
+    tm.id = t.id_teams AND t.id_estado = 3  -- Filtra solo las tareas con id_estado = 3
 LEFT JOIN 
     users2 u 
 ON 
     u.id = tm.id_leader
-
 GROUP BY 
     tm.id, tm.nombre, tm.fondo, u.nombre;
+
 
           `;
 

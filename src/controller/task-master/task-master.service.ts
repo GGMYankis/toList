@@ -152,6 +152,9 @@ export class TaskMasterService {
                 .input('Revisada', 0)
                 .execute('asp_task');
 
+
+
+            const idNewTask = result.recordset[0].NewTaskId;
             const foundUser = await pool.request()
                 .query(`select * from users2 where id  = ${taskDto.id_user} `);
 
@@ -174,7 +177,7 @@ export class TaskMasterService {
                     descripcion: `${userFound.recordset[0].nombre} te ha asignado una nueva tarea`,
                     idUsuario: taskDto.id_user,
                     idUsuarioNotificador: taskDto.id_creador,
-                    idTask: 1,
+                    idTask: idNewTask,
                 }
 
 
